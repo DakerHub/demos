@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .long-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 200vh;
+        background-color: teal;
+      }
+      .counter {
+        position: fixed;
+        top: 10px;
+      }
+      .timeline-wp {
+        width: 80vw;
+      }
+      .timeline {
+        display: flex;
+        margin: 10px 0;
+      }
+      .timeline .item {
+        height: 20px;
+        width: 2px;
+        margin-right: 1px;
+        background-color: #ccc;
+      }
+      .timeline .item.active {
+        background-color: rgb(94, 255, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="long-content">
+      <div class="counter">
+        <div>
+          <span>无节流触发次数：</span>
+          <span id="value1">0</span>
+        </div>
+        <div>
+          <span>节流处理触发次数：</span>
+          <span id="value2">0</span>
+        </div>
+        <div>
+          <button id="btn">查看触发时间线</button>
+          <button id="reset">重置</button>
+          <div class="timeline-wp"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var $v1 = document.querySelector("#value1");
+      var $v2 = document.querySelector("#value2");
+      var $btn = document.querySelector("#btn");
+      var $reset = document.querySelector("#reset");
+      var count1 = 0;
+      var count2 = 0;
+      var timeline1 = [];
+      var timeline2 = [];
+
+      $btn.addEventListener("click", () => {
+        renderTimeline(timeline1, timeline2);
+      });
+      $reset.addEventListener("click", () => {
+        count1 = 0;
+        count2 = 0;
+        timeline1 = [];
+        timeline2 = [];
+      });
+      document.addEventListener("scroll", () => {
+        count1++;
+        $v1.innerText = count1;
+        timeline1.push(Date.now());
+      });
+
+      var throttleFn = throttle(e => {
+        count2++;
+        $v2.innerText = count2;
+        timeline2.push(Date.now());
+      }, 300);
+      document.addEventListener("scroll", throttleFn);
+
+      // function throttle(func, limit) {
+      //   let lastFunc;
+      //   let lastRan;
+      //   return function() {
+      //     const context = this;
+      //     const args = arguments;
+
+      //     if (!lastRan) {
+      //       func.apply(context, args);
+      //       lastRan = Date.now();
+      //       return;
+      //     }
+
+      //     clearTimeout(lastFunc);
+      //     lastFunc = setTimeout(function() {
+      //       func.apply(context, args);
+      //       lastRan = Date.now();
+      //     }, limit - (Date.now() - lastRan));
+      //   };
+      // }
+
+      // function throttle(fn, wait) {
+      //   var timer, last;
+      //   return function(...args) {
+      //     var now = Date.now();
+
+      //     if (!last) {
+      //       fn.apply(this, args);
+      //       last = now;
+      //     } else {
+      //       clearTimeout(timer);
+      //       timer = setTimeout(() => {
+      //         fn.apply(this, args);
+      //         last = now;
+      //       }, wait - now + last);
+      //     }
+      //   };
+      // }
+
+      function throttle(fn, wait) {
+        var timer, last;
+        return function(...args) {
+          var now = Date.now();
+
+          if (!last) {
+            fn.apply(this, args);
+            last = now;
+            return;
+          }
+
+          if (timer) return;
+
+          timer = setTimeout(
+            () => {
+              fn.apply(this, args);
+              last = Date.now();
+              timer = null;
+            },
+            now - last > wait ? 0 : wait
+          );
+        };
+      }
+
+      function debounce(fn, delay) {}
+
+      function renderTimeline(timeline1, timeline2) {
+        var start = Math.min(timeline1[1], timeline2[1]);
+        var ranges = [];
+        var $timeline1 = document.createElement("div");
+        $timeline1.classList.add("timeline");
+        var $timeline2 = document.createElement("div");
+        $timeline2.classList.add("timeline");
+        for (let i = 0; i < 200; i++) {
+          ranges.push([start + i * 50, start + (i + 1) * 50]);
+        }
+
+        for (let i = 0; i < ranges.length; i++) {
+          const [s, e] = ranges[i];
+          var $item1 = document.createElement("div");
+          $item1.classList.add("item");
+          $timeline1.appendChild($item1);
+          var inRange1 = timeline1.find(t => t > s && t <= e);
+          if (inRange1) {
+            $item1.classList.add("active");
+          }
+          var $item2 = document.createElement("div");
+          $item2.classList.add("item");
+          $timeline2.appendChild($item2);
+          var inRange2 = timeline2.find(t => t > s && t <= e);
+          if (inRange2) {
+            $item2.classList.add("active");
+          }
+        }
+
+        var $wp = document.querySelector(".timeline-wp");
+        $wp.appendChild($timeline1);
+        $wp.appendChild($timeline2);
+      }
+    </script>
+  </body>
+</html>

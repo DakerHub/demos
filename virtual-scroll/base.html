@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #list {
+        width: 600px;
+        height: 400px;
+        border: thin solid #ccc;
+      }
+      .item {
+        height: 30px;
+        padding: 0 10px;
+        line-height: 30px;
+        box-sizing: border-box;
+        border-bottom: thin solid #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="list"></div>
+    <script type="module">
+      import { createBigList, findIndexOverHeight, sumHeight, throttle } from "./utils.js"
+
+      const bigList = createBigList()
+
+      class VirtualScroll {
+        constructor({ el, list, itemElementGenerator, itemHeight }) {
+          this.$list = el
+          this.list = list
+          this.itemHeight = itemHeight
+          this.cacheCount = 10
+          this.itemElementGenerator = itemElementGenerator
+
+          this.renderListWithCache = []
+          this._virtualOffset = 0
+
+          this.mapList()
+          this.initContainer()
+          this.bindEvents()
+
+          this.virtualOffset = this._virtualOffset
+        }
+        set virtualOffset(val) {
+          this._virtualOffset = val
+          this.render(val)
+        }
+        get virtualOffset() {
+          return this._virtualOffset
+        }
+        bindEvents() {
+          let y = 0
+          const scrollSpace = this.contentHeight - this.containerHeight
+          const recordOffset = (e) => {
+            e.preventDefault()
+            y += e.deltaY
+            y = Math.max(y, 0)
+            y = Math.min(y, scrollSpace)
+          }
+          const updateOffset = () => {
+            this.virtualOffset = y
+          }
+          const _updateOffset = throttle(updateOffset, 16)
+
+          this.$list.addEventListener("wheel", recordOffset)
+          this.$list.addEventListener("wheel", _updateOffset)
+        }
+        initContainer() {
+          this.containerHeight = this.$list.clientHeight
+          this.contentHeight = sumHeight(this._list)
+          this.$list.style.overflow = "hidden"
+          // this.contentHeight = sumHeight(this._list)
+        }
+        mapList() {
+          this._list = this.list.map((item, i) => ({
+            height: this.itemHeight,
+            index: i,
+            item: item,
+          }))
+        }
+        render(virtualOffset) {
+          const headIndex = findIndexOverHeight(this._list, virtualOffset)
+          const tailIndex = findIndexOverHeight(this._list, virtualOffset + this.containerHeight)
+
+          let renderOffset
+          if (withinCache(headIndex, tailIndex, this.renderListWithCache)) {
+            // 只改变translateY
+            const headIndexWithCache = this.renderListWithCache[0].index
+            renderOffset = virtualOffset - sumHeight(this._list, 0, headIndexWithCache)
+            this.$listInner.style.transform = `translateY(-${renderOffset}px)`
+            return
+          }
+
+          const headIndexWithCache = Math.max(headIndex - this.cacheCount, 0)
+          const tailIndexWithCache = Math.min(tailIndex + this.cacheCount, this._list.length)
+
+          this.renderListWithCache = this._list.slice(headIndexWithCache, tailIndexWithCache)
+
+          renderOffset = virtualOffset - sumHeight(this._list, 0, headIndex)
+
+          renderDOMList.call(this, renderOffset)
+
+          function renderDOMList(renderOffset) {
+            this.$listInner = document.createElement("div")
+            this.renderListWithCache.forEach((item) => {
+              const $el = this.itemElementGenerator(item)
+              this.$listInner.appendChild($el)
+            })
+            this.$listInner.style.transform = `translateY(-${renderOffset}px)`
+            this.$list.innerHTML = ""
+            this.$list.appendChild(this.$listInner)
+          }
+
+          function withinCache(currentHead, currentTail, renderListWithCache) {
+            if (!renderListWithCache.length) return false
+
+            const head = renderListWithCache[0]
+            const tail = renderListWithCache[renderListWithCache.length - 1]
+            const withinRange = (num, min, max) => num >= min && num <= max
+
+            return withinRange(currentHead, head.index, tail.index) && withinRange(currentTail, head.index, tail.index)
+          }
+        }
+      }
+
+      new VirtualScroll({
+        el: document.querySelector("#list"),
+        list: bigList,
+        itemHeight: 30,
+        itemElementGenerator: ({ item, index }) => {
+          const $item = document.createElement("div")
+          $item.innerHTML = item
+          $item.classList.add("item")
+          return $item
+        },
+      })
+    </script>
+  </body>
+</html>

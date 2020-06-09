@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky</title>
+  <style>
+    .container{
+      height: 400px;
+      width: 200px;
+      overflow: scroll;
+      background-color: #eee;
+    }
+    .long-content{
+      height: 200px;
+      background-color: ccc;
+    }
+    h2{
+      position: sticky;
+      top: 0px;
+      background-color: teal;
+      padding: 0 20px;
+    }
+    .pt40{
+      padding-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="pt40">
+      <h2>A</h2>
+      <div class="long-content"></div>
+    </div>
+    <div class="pt40">
+      <h2>B</h2>
+      <div class="long-content"></div>
+    </div>
+    <div class="pt40">
+      <h2>C</h2>
+      <div class="long-content"></div>
+    </div>
+  </div>
+</body>
+</html>

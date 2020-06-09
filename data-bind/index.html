@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DataBind</title>
+  </head>
+  <body>
+    <div id="vm"></div>
+    <input type="text" id="input" />
+    <output id="output"></output>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script type="module">
+      import { observe } from "./observer.js"
+      import { Watcher } from "./watcher.js"
+      window.vm = {
+        data: {
+          msg: "",
+        },
+      }
+      observe(vm.data)
+
+      window.watcher1 = new Watcher(vm.data, "msg", (val, newVal) => {
+        console.log("Yeah, I'm first!")
+      })
+      window.watcher2 = new Watcher(vm.data, "msg", (val, newVal) => {
+        console.log("I'm second!")
+      })
+
+      window.vm = new Vue({
+        data: {
+          msg: "Hello!",
+        },
+        watch: {
+          msg() {},
+        },
+        render: function (createElement) {
+          return createElement("h1", this.msg)
+        },
+      })
+
+      vm.$mount("#vm")
+      console.log(vm)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debounce</title>
+    <style>
+      .output {
+        display: flex;
+      }
+      .output div {
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <p>监听输入框的input事件，请在下方输入文字：</p>
+    <input type="text" id="input" />
+    <div class="output">
+      <div>
+        <h3>未处理的回调函数</h3>
+        <output id="output1"></output>
+      </div>
+      <div>
+        <h3>Debounce后的处理函数</h3>
+        <output id="output2"></output>
+      </div>
+    </div>
+
+    <script>
+      var $input = document.querySelector("#input");
+      var $output1 = document.querySelector("#output1");
+      var $output2 = document.querySelector("#output2");
+
+      var count1 = 0;
+      var outputs1 = [];
+      var outputs2 = [];
+      $input.addEventListener("input", e => {
+        count1++;
+        outputs1.push(e.target.value);
+        $output1.innerText = outputs1.join("\n");
+      });
+
+      var debounceFn = debounce(e => {
+        outputs2.push(e.target.value);
+        $output2.innerText = outputs2.join("\n");
+      }, 300);
+      $input.addEventListener("input", debounceFn);
+
+      function debounce(fn, wait) {
+        var timer;
+        return function(...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            fn.apply(this, args);
+          }, wait);
+        };
+      }
+    </script>
+  </body>
+</html>

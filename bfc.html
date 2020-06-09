@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BFC</title>
+    <style>
+      .container {
+        width: 600px;
+        border: 2px solid teal;
+        margin-bottom: 200px;
+      }
+      .box1 {
+        width: 200px;
+        height: 200px;
+        background-color: aquamarine;
+        float: left;
+      }
+      .box2 {
+        width: 400px;
+        height: 100px;
+        background-color: tomato;
+      }
+      .overflow-hidden {
+        overflow: hidden;
+      }
+      .w800 {
+        width: 800px;
+      }
+      .wauto {
+        width: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box1">BOX-1 Float left</div>
+      <div class="box2">BOX-2</div>
+    </div>
+    <div class="container overflow-hidden">
+      <div class="box1">BOX-1 Float left</div>
+      <div class="box2">BOX-2</div>
+      overflow-hidden
+    </div>
+    <div class="container overflow-hidden w800">
+      <div class="box1">BOX-1 Float left</div>
+      <div class="box2 overflow-hidden wauto">BOX-2 overflow-hidden</div>
+      overflow-hidden
+    </div>
+  </body>
+</html>

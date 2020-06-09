@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proxy</title>
+  </head>
+  <body>
+    <script>
+      var 中国铁路12306 = {
+        高铁票: "K1234",
+      }
+      var 携程 = new Proxy(中国铁路12306, {
+        get(target, key, receiver) {
+          return target[key] + "_"
+        },
+      })
+
+var data = {
+  a: 1,
+}
+
+var _data = new Proxy(data, {
+  get(target, key) {
+    return target[key]
+  },
+  set(target, key, value) {
+    return (target[key] = value)
+  },
+})
+    </script>
+  </body>
+</html>

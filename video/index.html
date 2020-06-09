@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIDEO</title>
+    <style>
+      h1,
+      .video-box {
+        text-align: center;
+      }
+      video {
+        width: 400px;
+        object-fit: fill;
+        object-position: 50% 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>VIDEO DEMO</h1>
+    <div class="video-box">
+      <video id="video" preload="metadata" muted poster="https://dummyimage.com/600x400/16c78f/fff.gif&text=Poster">
+        <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4" />
+        <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.webm" type="video/webm" />
+        <p>您的浏览器不支持HTML5播放器</p>
+      </video>
+
+      <div class="controls">
+        <button class="play-pause">播放</button>
+        <button class="fullscreen">全屏</button>
+        <br />
+        <span>
+          <label for="">进度</label>
+          <input class="progress" type="range" />
+        </span>
+        <br />
+        <span>
+          <label for="">音量</label>
+          <input class="volume" type="range" />
+        </span>
+        <br />
+        <span>
+          <label for="">速率</label>
+          <input class="speed" type="range" />
+        </span>
+      </div>
+      <!-- <hr />
+      <video src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4">
+        <p>您的浏览器不支持HTML5播放器</p>
+      </video> -->
+      <script src="./index.js" type="module"></script>
+    </div>
+  </body>
+</html>

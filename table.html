@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      td,
+      th {
+        border: thin solid #ccc;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      .xw {
+        display: flex;
+        border-right: none;
+        border-bottom: none;
+        position: relative;
+        overflow: hidden;
+      }
+      .x1,
+      .x2 {
+        display: inline-block;
+      }
+      .x1 {
+        padding-top: 1em;
+      }
+      .x2 {
+        padding-bottom: 1em;
+      }
+      .tri {
+        position: absolute;
+        height: 1px;
+        top: 50%;
+        width: 100%;
+        background-color: #ccc;
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <th class="xw">
+          <div class="x1">xxxxxxxxxxxx1</div>
+          <div class="x2">xxxxxxxxxxxx2</div>
+          <div class="tri"></div>
+        </th>
+        <th>y</th>
+        <th>z</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
