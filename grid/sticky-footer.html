@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        display: grid;
+        min-height: 100%;
+        grid-template-rows: 60px 1fr auto;
+      }
+      footer {
+        grid-row: 3 / 4;
+      }
+    </style>
+  </head>
+  <body>
+    <header>HEADER</header>
+    <div class="content">
+      MAIN
+    </div>
+    <footer>FOOTER</footer>
+  </body>
+</html>

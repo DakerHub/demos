@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      a {
+        color: #fff;
+      }
+      body {
+        margin: 0;
+      }
+      .wrapper {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 40px auto 30px;
+      }
+      header {
+        line-height: 40px;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      footer {
+        line-height: 30px;
+        padding: 0 20px;
+      }
+      main {
+        padding: 20px;
+      }
+    </style>
+    <link id="colors" rel="stylesheet" href="./colors.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <span>HEADER</span>
+        <a id="btn" href="javascript:;">深色模式</a>
+      </header>
+      <main>
+        <h1>哈哈哈</h1>
+        <p>hahahahahahahaha</p>
+      </main>
+      <footer>FOOTER</footer>
+    </div>
+
+    <script>
+      var $btn = document.querySelector("#btn")
+      var $stlye = document.querySelector("#colors")
+
+      var darkMode = false
+      $btn.onclick = async () => {
+        var colorsSource = darkMode ? "./colors.css" : "./colors_dark.css"
+
+        try {
+          await fetch(colorsSource)
+          $stlye.href = colorsSource
+          $btn.innerHTML = darkMode ? "深色模式" : "浅色模式"
+          darkMode = !darkMode
+        } catch (error) {
+        } finally {
+        }
+      }
+    </script>
+  </body>
+</html>

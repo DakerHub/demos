@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        grid-area: header;
+        background-color: #eee;
+        padding: 10px;
+        font-weight: bold;
+      }
+      main {
+        grid-area: main;
+        background-color: #eee;
+        padding: 10px;
+        font-weight: bold;
+      }
+      footer {
+        grid-area: footer;
+        background-color: #eee;
+        padding: 10px;
+        font-weight: bold;
+        align-self: end;
+      }
+      aside {
+        grid-area: aside;
+        background-color: #eee;
+        padding: 10px;
+        font-weight: bold;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+
+        /* sticky footer */
+        grid-template-rows: 60px 1fr auto;
+        min-height: 100vh;
+
+        gap: 10px;
+        grid-template-areas:
+          "header header header header header"
+          "aside main main main . "
+          "footer footer footer footer footer";
+      }
+
+      .long-content {
+        height: 300px;
+        background-color: rgb(252, 154, 154);
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      @media screen and (max-width: 600px) {
+        .container {
+          grid-template-rows: 60px 1fr auto auto;
+          grid-template-areas:
+            "header header header header header"
+            "main main main main main"
+            "aside aside aside aside aside"
+            "footer footer footer footer footer";
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        HEADER
+      </header>
+      <main>
+        <h1>MAIN</h1>
+        <div class="long-content">
+          <p>这里我们用到的属性有：</p>
+          <ul>
+            <li>grid-template-columns</li>
+            <li>grid-template-rows</li>
+            <li>grid-template-areas</li>
+            <li>grid-area</li>
+            <li>gap</li>
+          </ul>
+          <p>再配合媒体查询实现响应式布局</p>
+        </div>
+        <div class="long-content">long-content</div>
+      </main>
+      <aside>
+        <h2>ASIDE</h2>
+        <div class="long-content">long-content</div>
+      </aside>
+      <footer>
+        <h2>FOOTER</h2>
+      </footer>
+    </div>
+  </body>
+</html>

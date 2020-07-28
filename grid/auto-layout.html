@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrapper {
+        width: 600px;
+        border: 4px solid #20897f;
+        border-radius: 4px;
+        padding: 10px;
+      }
+      .wrapper div {
+        border: 2px solid #2ec4b6;
+        border-radius: 4px;
+        background-color: rgba(115, 215, 206, 0.25);
+        padding: 10px;
+      }
+      .wrapper {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 100px;
+        grid-auto-columns: 100px;
+        gap: 5px;
+        grid-auto-flow: row dense;
+      }
+      .wrapper div:nth-child(5) {
+        grid-area: 1 / 2 / 5 / 5;
+      }
+      .wrapper div:nth-child(2) {
+        grid-area: 2 / 5 / 4 / 6;
+      }
+      .wrapper div:nth-child(3) {
+        grid-area: auto / auto / span 2 / span 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </div>
+  </body>
+</html>
