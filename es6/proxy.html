@@ -16,18 +16,18 @@
         },
       })
 
-var data = {
-  a: 1,
-}
+      var data = {
+        a: 1,
+      }
 
-var _data = new Proxy(data, {
-  get(target, key) {
-    return target[key]
-  },
-  set(target, key, value) {
-    return (target[key] = value)
-  },
-})
+      var _data = new Proxy(data, {
+        get(target, key) {
+          return target[key]
+        },
+        set(target, key, value) {
+          return (target[key] = value)
+        },
+      })
     </script>
   </body>
 </html>
