@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function getJSONP() {
+        var el = document.createElement('script')
+        var fnName = 'fn123'
+        el.src = '/asset/jsonp.json?callback=' + fnName
+
+        window[fnName] = function (data) {
+          console.log(data)
+
+          // 在获取完数据后清除多余的函数和元素
+          document.body.removeChild(el)
+          window[fnName] = null
+        }
+
+        document.body.appendChild(el)
+      }
+
+      getJSONP()
+    </script>
+  </body>
+</html>
