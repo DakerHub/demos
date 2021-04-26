@@ -2,12 +2,18 @@ header{
   background-color: #414141;
   color: #ddd;
 }
+header a {
+  color: #ddd;
+}
 footer{
-  background-color: rgb(85, 85, 85);
+  background-color: #555555;
   color: #ddd;
 }
 
 body{
   background-color: #676767;
   color: #eee;
+}
+body a {
+  color: #ddd;
 }

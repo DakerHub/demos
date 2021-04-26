@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      a {
-        color: #fff;
-      }
       body {
         margin: 0;
       }
@@ -40,8 +37,15 @@
         <a id="btn" href="javascript:;">深色模式</a>
       </header>
       <main>
-        <h1>哈哈哈</h1>
-        <p>hahahahahahahaha</p>
+        <h1>主题切换</h1>
+        <p>通过将不同颜色配置文件加载引用实现</p>
+        <p>比如：</p>
+        <p>1. colors.css</p>
+        <p>2. colors_dark.css</p>
+        <p>通过修改link标签的href属性实现主题切换</p>
+        <br />
+        <p>需要注意的是要将关于颜色声明的css语句都抽离出来成为一个单独的主题样式表</p>
+        <a href="./css-variable.html">CSS变量方法</a>
       </main>
       <footer>FOOTER</footer>
     </div>
@@ -52,7 +56,7 @@
 
       var darkMode = false
       $btn.onclick = async () => {
-        var colorsSource = darkMode ? "./colors.css" : "./colors_dark.css"
+        var colorsSource = darkMode ? "./colors.css" : "./colors-dark.css"
 
         try {
           await fetch(colorsSource)

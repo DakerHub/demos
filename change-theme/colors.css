@@ -2,7 +2,14 @@ header{
   background-color: #2a90df;
   color: #fff;
 }
-footer{
-  background-color: rgb(201, 198, 198);
+header a {
   color: #fff;
+}
+footer{
+  background-color: #c9c6c6;
+  color: #fff;
+}
+
+main a{
+  color: #333;
 }

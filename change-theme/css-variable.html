@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      a {
+        color: var(--text-color);
+      }
+      body {
+        margin: 0;
+      }
+      .wrapper {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 40px auto 30px;
+      }
+      header {
+        line-height: 40px;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        background-color: var(--primary-color);
+        color: var(--text-color--reverse);
+      }
+      footer {
+        line-height: 30px;
+        padding: 0 20px;
+        background-color: var(--primary-color);
+        color: var(--text-color--reverse);
+      }
+      main {
+        padding: 20px;
+        color: var(--text-color);
+        background-color: var(--bg-color);
+      }
+    </style>
+    <style id="dark">
+      :root {
+        --primary-color: #414141;
+        --text-color--reverse: #ddd;
+        --text-color: #ddd;
+        --secondary-color: #555555;
+        --bg-color: #676767;
+      }
+    </style>
+    <style id="light">
+      :root {
+        --primary-color: #2a90df;
+        --text-color--reverse: #fff;
+        --text-color: #333;
+        --secondary-color: #c9c6c6;
+        --bg-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <span>HEADER</span>
+        <a id="btn" href="javascript:;">深色模式</a>
+      </header>
+      <main>
+        <h1>主题切换</h1>
+        <p>通过css变量先设置网站色系</p>
+        <p>比如：</p>
+        <p>
+          :root { --primary-color: #2a90df; }
+        </p>
+        <p>
+          :root { --primary-color: #414141; }
+        </p>
+        <p>通过修改定义主题的style的顺序来切换主题，最后的style标签决定了最终的主题</p>
+        <br />
+        <p>需要注意的是所有的页面颜色都需要使用var(--css-variable)，以便一致更改。</p>
+        <a href="./index.html">切换样式表引用法</a>
+      </main>
+      <footer>FOOTER</footer>
+    </div>
+
+    <script>
+      var $btn = document.querySelector("#btn")
+      var $light = document.querySelector("#light")
+      var $dark = document.querySelector("#dark")
+
+      var darkMode = false
+      $btn.onclick = () => {
+        darkMode = !darkMode
+        if (darkMode) {
+          $light.insertAdjacentElement("afterend", $dark)
+        } else {
+          $dark.insertAdjacentElement("afterend", $light)
+        }
+        $btn.innerHTML = darkMode ? "浅色模式" : "深色模式"
+      }
+    </script>
+  </body>
+</html>
