@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      span {
+        vertical-align: middle;
+      }
+      sup {
+        top: -0.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <span
+        >asdba
+        <sup>asf</sup>
+        asgasga
+      </span>
+    </div>
+    <script src="/asset/async.js"></script>
+    <script defer src="/asset/defer.js"></script>
+    <script>
+      console.log('Script')
+      window.onload = function () {
+        console.log('onload')
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('dom loaded')
+      })
+    </script>
+  </body>
+</html>

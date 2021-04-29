@@ -54,36 +54,36 @@
       </div>
     </div>
     <script>
-      var $v1 = document.querySelector("#value1");
-      var $v2 = document.querySelector("#value2");
-      var $btn = document.querySelector("#btn");
-      var $reset = document.querySelector("#reset");
-      var count1 = 0;
-      var count2 = 0;
-      var timeline1 = [];
-      var timeline2 = [];
+      var $v1 = document.querySelector('#value1')
+      var $v2 = document.querySelector('#value2')
+      var $btn = document.querySelector('#btn')
+      var $reset = document.querySelector('#reset')
+      var count1 = 0
+      var count2 = 0
+      var timeline1 = []
+      var timeline2 = []
 
-      $btn.addEventListener("click", () => {
-        renderTimeline(timeline1, timeline2);
-      });
-      $reset.addEventListener("click", () => {
-        count1 = 0;
-        count2 = 0;
-        timeline1 = [];
-        timeline2 = [];
-      });
-      document.addEventListener("scroll", () => {
-        count1++;
-        $v1.innerText = count1;
-        timeline1.push(Date.now());
-      });
+      $btn.addEventListener('click', () => {
+        renderTimeline(timeline1, timeline2)
+      })
+      $reset.addEventListener('click', () => {
+        count1 = 0
+        count2 = 0
+        timeline1 = []
+        timeline2 = []
+      })
+      document.addEventListener('scroll', () => {
+        count1++
+        $v1.innerText = count1
+        timeline1.push(Date.now())
+      })
 
-      var throttleFn = throttle(e => {
-        count2++;
-        $v2.innerText = count2;
-        timeline2.push(Date.now());
-      }, 300);
-      document.addEventListener("scroll", throttleFn);
+      var throttleFn = throttle((e) => {
+        count2++
+        $v2.innerText = count2
+        timeline2.push(Date.now())
+      }, 300)
+      document.addEventListener('scroll', throttleFn)
 
       // function throttle(func, limit) {
       //   let lastFunc;
@@ -125,63 +125,61 @@
       // }
 
       function throttle(fn, wait) {
-        var timer, last;
-        return function(...args) {
-          var now = Date.now();
-
-          if (!last) {
-            fn.apply(this, args);
-            last = now;
-            return;
+        var timer, lastAt
+        return function (...args) {
+          if (!lastAt) {
+            fn.apply(this, args)
+            lastAt = Date.now()
+            return
           }
 
-          if (timer) return;
+          if (timer) return
 
           timer = setTimeout(
             () => {
-              fn.apply(this, args);
-              last = Date.now();
-              timer = null;
+              fn.apply(this, args)
+              lastAt = Date.now()
+              timer = null
             },
-            now - last > wait ? 0 : wait
-          );
-        };
+            Date.now() - lastAt > wait ? 0 : wait
+          )
+        }
       }
 
       function debounce(fn, delay) {}
 
       function renderTimeline(timeline1, timeline2) {
-        var start = Math.min(timeline1[1], timeline2[1]);
-        var ranges = [];
-        var $timeline1 = document.createElement("div");
-        $timeline1.classList.add("timeline");
-        var $timeline2 = document.createElement("div");
-        $timeline2.classList.add("timeline");
+        var start = Math.min(timeline1[1], timeline2[1])
+        var ranges = []
+        var $timeline1 = document.createElement('div')
+        $timeline1.classList.add('timeline')
+        var $timeline2 = document.createElement('div')
+        $timeline2.classList.add('timeline')
         for (let i = 0; i < 200; i++) {
-          ranges.push([start + i * 50, start + (i + 1) * 50]);
+          ranges.push([start + i * 50, start + (i + 1) * 50])
         }
 
         for (let i = 0; i < ranges.length; i++) {
-          const [s, e] = ranges[i];
-          var $item1 = document.createElement("div");
-          $item1.classList.add("item");
-          $timeline1.appendChild($item1);
-          var inRange1 = timeline1.find(t => t > s && t <= e);
+          const [s, e] = ranges[i]
+          var $item1 = document.createElement('div')
+          $item1.classList.add('item')
+          $timeline1.appendChild($item1)
+          var inRange1 = timeline1.find((t) => t > s && t <= e)
           if (inRange1) {
-            $item1.classList.add("active");
+            $item1.classList.add('active')
           }
-          var $item2 = document.createElement("div");
-          $item2.classList.add("item");
-          $timeline2.appendChild($item2);
-          var inRange2 = timeline2.find(t => t > s && t <= e);
+          var $item2 = document.createElement('div')
+          $item2.classList.add('item')
+          $timeline2.appendChild($item2)
+          var inRange2 = timeline2.find((t) => t > s && t <= e)
           if (inRange2) {
-            $item2.classList.add("active");
+            $item2.classList.add('active')
           }
         }
 
-        var $wp = document.querySelector(".timeline-wp");
-        $wp.appendChild($timeline1);
-        $wp.appendChild($timeline2);
+        var $wp = document.querySelector('.timeline-wp')
+        $wp.appendChild($timeline1)
+        $wp.appendChild($timeline2)
       }
     </script>
   </body>
