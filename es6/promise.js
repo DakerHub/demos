@@ -70,44 +70,39 @@ function MyPromise(init) {
     // 2.2.1.2 如果 onRejected 不是函数，它会被忽略
     var validOnRejected = typeof onRejected === 'function' ? onRejected : defaultOnRejected
 
-    var nextOnFullfilled = (resolve2, reject2) => {
+    var nextOnFullfilled = (promise, resolve2, reject2) => {
       try {
         var nextValue = validOnFulfilled(value)
-        resolve2(nextValue)
+        resolvePromise(promise, nextValue, resolve2, reject2)
       } catch (error) {
         reject2(error)
       }
     }
     var nextOnRejected = (resolve2, reject2) => {
       try {
-        validOnRejected(reason)
-        resolve2()
+        var nextValue = validOnRejected(reason)
+        resolvePromise(promise, nextValue, resolve2, reject2)
       } catch (error) {
         reject2(error)
       }
     }
 
-    var nextInit
-    if (status === 'padding') {
-      nextInit = (resolve2, reject2) => {
-        onFulfilleds.push(nextOnFullfilled.bind(this, resolve2, reject2))
-        onRejecteds.push(nextOnRejected.bind(this, resolve2, reject2))
-      }
-    } else if (status === 'fulfilled') {
-      nextInit = (resolve2, reject2) => {
+    var p = new MyPromise((resolve2, reject2) => {
+      if (status === 'padding') {
+        onFulfilleds.push(nextOnFullfilled.bind(this, p, resolve2, reject2))
+        onRejecteds.push(nextOnRejected.bind(this, p, resolve2, reject2))
+      } else if (status === 'fulfilled') {
         process.nextTick(() => {
-          nextOnFullfilled(resolve2, reject2)
+          nextOnFullfilled(p, resolve2, reject2)
+        })
+      } else if (status === 'rejected') {
+        process.nextTick(() => {
+          nextOnRejected(p, resolve2, reject2)
         })
       }
-    } else if (status === 'rejected') {
-      nextInit = (resolve2, reject2) => {
-        process.nextTick(() => {
-          nextOnRejected(resolve2, reject2)
-        })
-      }
-    }
+    })
 
-    return new MyPromise(nextInit)
+    return p
   }
 
   var resolve = function (val) {
@@ -145,24 +140,95 @@ function MyPromise(init) {
   init(resolve, reject)
 }
 
-var p = new MyPromise((resolve, reject) => {
-  resolve(1)
-})
+MyPromise.resolve = function (value) {
+  var p = new MyPromise((resolve, reject) => {
+    resolvePromise(p, value, resolve, reject)
+  })
 
-p.then(null, (rea) => {
-  console.log('Reject: ', rea)
-}).then(
-  (val) => {
-    console.log('Resolve2: ', val)
+  return
+}
+
+MyPromise.reject = function (reason) {
+  return new MyPromise((resolve, reject) => {
+    reject(reason)
+  })
+}
+
+MyPromise.all = function (promises) {
+  if (!Array.isArray(promises)) {
+    return MyPromise.resolve([])
+  }
+
+  return new MyPromise((resolve, reject) => {
+    var count = promises.length,
+      values = [],
+      _promises = promises.concat()
+
+    for (let i = 0; i < _promises.length; i++) {
+      var p = _promises[i]
+      if (p instanceof MyPromise) {
+        p.then(
+          (val) => {
+            values[i] = val
+            if (--count === 0) {
+              _promises.length = 0
+              return resolve(values)
+            }
+          },
+          (reason) => {
+            _promises.length = 0
+            return reject(reason)
+          }
+        )
+      } else {
+        values[i] = p
+        if (--count === 0) {
+          _promises.length = 0
+          return resolve(values)
+        }
+      }
+    }
+  })
+}
+
+// var p = new MyPromise((resolve, reject) => {
+//   resolve(1)
+// })
+
+// p.then(null, (rea) => {
+//   console.log('Reject: ', rea)
+// }).then(
+//   (val) => {
+//     console.log('Resolve2: ', val)
+//   },
+//   (val) => {
+//     console.log('Reject2: ', val)
+//   }
+// )
+
+// setTimeout(() => {
+//   p.then((val) => {
+//     console.log('Resolve3: ', val)
+//   })
+// }, 0)
+// console.log(p.toString())
+
+var ps = MyPromise.all([
+  MyPromise.resolve(1),
+  2,
+  new MyPromise((r) => {
+    setTimeout(() => {
+      r(3)
+    }, 1000)
+  }),
+  MyPromise.reject(4),
+])
+
+ps.then(
+  (values) => {
+    console.log(values)
   },
-  (val) => {
-    console.log('Reject2: ', val)
+  (reason) => {
+    console.log(reason)
   }
 )
-
-setTimeout(() => {
-  p.then((val) => {
-    console.log('Resolve3: ', val)
-  })
-}, 0)
-console.log(p.toString())

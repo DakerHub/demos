@@ -1,14 +1,46 @@
-var p = new Promise((resolve, reject) => {
-  resolve({
-    then: function (resolve, reject) {
-      resolve(1)
-    },
-  })
-})
+var p = Promise.reject(1)
 
-p.then(function onFulfilled(value) {
-  console.log(value)
-})
+p.then(
+  (val) => {
+    console.log(val)
+  },
+  (rea) => {
+    console.error('Error:', rea)
+    return rea
+  }
+).then(console.log)
+
+// var p = Promise.all([
+//   Promise.resolve(1),
+//   2,
+//   new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(3)
+//     }, 100)
+//   }),
+//   Promise.reject(4),
+// ])
+
+// p.then(
+//   (val) => {
+//     console.log(val)
+//   },
+//   (rea) => {
+//     console.error(rea)
+//   }
+// )
+
+// var p = new Promise((resolve, reject) => {
+//   resolve({
+//     then: function (resolve, reject) {
+//       resolve(1)
+//     },
+//   })
+// })
+
+// p.then(function onFulfilled(value) {
+//   console.log(value)
+// })
 
 // p.then(
 //   (val) => {
