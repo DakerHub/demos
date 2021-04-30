@@ -11,6 +11,13 @@ p.then(
   console.log(val)
 })
 
+var then = p.then
+console.log(
+  then((val) => {
+    console.log('Resolve: ', val)
+  })
+)
+
 setTimeout(() => {
   p.then((val) => {
     console.log('Resolve2: ', val)
