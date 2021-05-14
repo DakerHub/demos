@@ -7,13 +7,14 @@ var obj = Object.fromEntries(m)
 console.log(obj)
 
 // 存在性
-var obj = Object.create({ b: 1 })
+var obj = Object.create({ b: 1, toString: () => "I'm obj" })
 obj[Symbol('c')] = 1
 Object.defineProperty(obj, 'a', {
   value: 1,
   enumerable: false,
 })
 
+console.log(obj.toString())
 console.log(obj)
 
 console.log("'a' in obj: ", 'a' in obj) // true

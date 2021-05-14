@@ -11,19 +11,20 @@
         constructor() {
           super()
 
-          var shadow = this.attachShadow({ mode: "open" })
+          var shadow = this.attachShadow({ mode: 'open' })
 
-          var div = document.createElement("div")
-          var style = document.createElement("style")
+          var div = document.createElement('div')
+          var style = document.createElement('style')
+          div.innerText = 'Shadow'
           shadow.appendChild(style)
           shadow.appendChild(div)
         }
         connectedCallback() {
-          this.style.backgroundColor = this.getAttribute("bg")
+          this.style.backgroundColor = this.getAttribute('bg')
         }
       }
 
-      customElements.define("my-div", MyDiv, { extends: "div" })
+      customElements.define('my-div', MyDiv, { extends: 'div' })
     </script>
 
     <div is="my-div" bg="#eee">x</div>

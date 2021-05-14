@@ -1,4 +1,4 @@
-// 没有解决循环引用
+// 没考虑原型属性
 function deepClone(obj, valueSet = new Set()) {
   if (typeof obj === 'object') {
     var typeString = Object.prototype.toString.call(obj)
