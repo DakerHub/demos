@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intersection Observer</title>
+    <style>
+      .box {
+        height: 150vh;
+        background-color: green;
+        display: flex;
+        align-items: center;
+      }
+      .image {
+        height: 100px;
+        background-color: greenyellow;
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      href="https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver"
+      >MDN IntersectionObserver</a
+    >
+    <div class="box">
+      <div>下面的图片现在还没加载</div>
+    </div>
+    <div class="image"></div>
+    <script>
+      var options = {
+        // 设置完可在距离top 100px的时候就触发，提前加载。
+        rootMargin: "100px 0 0 0",
+        // 在进入的时候触发
+        threshold: [0],
+      }
+
+      // 图片懒加载，需要判断是否第一次执行
+      var intersectionObserver = new IntersectionObserver(function (entries) {
+        // If intersectionRatio is 0, the target is out of view
+        // and we do not need to do anything.
+        const entry = entries[0]
+        console.log(entry)
+        if (entry.intersectionRatio <= 0) return
+
+        const processed = entry.target.getAttribute("data-processed")
+        if (processed) return
+
+        entry.target.innerText = "加载中..."
+        entry.target.setAttribute("data-processed", "processing")
+        console.log("加载图片中...")
+
+        setTimeout(() => {
+          entry.target.innerText = "我是一张图片"
+          entry.target.setAttribute("data-processed", "processed")
+        }, 500)
+      }, options)
+      intersectionObserver.observe(document.querySelector(".image"))
+    </script>
+  </body>
+</html>
