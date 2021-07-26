@@ -10,11 +10,18 @@
         height: 150vh;
         background-color: green;
         display: flex;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
       }
       .image {
         height: 100px;
         background-color: greenyellow;
+      }
+      .colored-box {
+        height: 200px;
+        width: 200px;
+        background-color: rgba(0, 0, 0, 0);
       }
     </style>
   </head>
@@ -26,22 +33,20 @@
     <div class="box">
       <div>下面的图片现在还没加载</div>
     </div>
+    <div class="colored-box"></div>
     <div class="image"></div>
     <script>
       var options = {
         // 设置完可在距离top 100px的时候就触发，提前加载。
-        rootMargin: "100px 0 0 0",
+        rootMargin: "100px 0px 0px 0px",
         // 在进入的时候触发
         threshold: [0],
       }
 
       // 图片懒加载，需要判断是否第一次执行
-      var intersectionObserver = new IntersectionObserver(function (entries) {
-        // If intersectionRatio is 0, the target is out of view
-        // and we do not need to do anything.
+      var ioImg = new IntersectionObserver(function (entries) {
         const entry = entries[0]
-        console.log(entry)
-        if (entry.intersectionRatio <= 0) return
+        if (entry.intersectionRatio <= 0 || entry.intersectionRatio >= 1) return
 
         const processed = entry.target.getAttribute("data-processed")
         if (processed) return
@@ -55,7 +60,33 @@
           entry.target.setAttribute("data-processed", "processed")
         }, 500)
       }, options)
-      intersectionObserver.observe(document.querySelector(".image"))
+      ioImg.observe(document.querySelector(".image"))
+
+      const thresholds = createThresholds(0.01)
+      console.log(thresholds.length)
+      const boxOptions = {
+        rootMargin: "100px 0px 0px 0px",
+        threshold: thresholds,
+      }
+      var ioBox = new IntersectionObserver(function (entries) {
+        console.count("color")
+        const entry = entries[0]
+        if (entry.intersectionRatio <= 0 || entry.intersectionRatio >= 1) return
+
+        entry.target.style.backgroundColor = `rgba(0,0,0,${entry.intersectionRatio})`
+      }, boxOptions)
+      ioBox.observe(document.querySelector(".colored-box"))
+
+      function createThresholds(step) {
+        const thresholds = []
+        let i = 0
+        while (i <= 1) {
+          thresholds.push(i)
+          i += step
+        }
+
+        return thresholds
+      }
     </script>
   </body>
 </html>
